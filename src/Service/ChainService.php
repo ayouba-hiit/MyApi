@@ -26,7 +26,7 @@ class ChainService
         $charsArray = explode(';', $separatedString);
 
         $response = ['length' => 0, 'char' => null];
-        
+
         foreach ($charsArray as $key => $chain){
             if($response['length'] < strlen($chain)) {
                 $response['length'] = strlen($chain);

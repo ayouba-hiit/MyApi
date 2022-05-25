@@ -6,9 +6,8 @@ use App\Service\ChainService;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations\Get;
 use Symfony\Component\Routing\Annotation\Route;
-use OpenApi\Annotations as OA;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
-use App\Entity\Chain;
+use Symfony\Contracts\Cache\CacheInterface;
 
 /**
  * @Route("/api")
@@ -31,9 +30,11 @@ class ApiController extends AbstractFOSRestController
      *
      * @QueryParam(name="chain", requirements="[a-zA-Z]+", strict=true, description="The chain")
      */
-    public function calculateOccurrenceAction(string $chain)
+    public function calculateOccurrenceAction(string $chain, CacheInterface $cache)
     {
-        $response = $this->chainService->getGreatestOccurrence($chain);
+        $response = $cache->get(md5($chain), function() use ($chain){
+            return $this->chainService->getGreatestOccurrence($chain);
+        });
 
         $view = $this->view($response, 200);
 
