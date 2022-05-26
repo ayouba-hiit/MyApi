@@ -13,7 +13,10 @@ class ChainServiceTest extends TestCase
         'gdgnkgnhfkhtrbppppppppiu' => ['length' => 8, 'char' => 'p'],
     ];
 
-    public function testGetGreatestOccurrence()
+    /**
+     * @return void
+     */
+    public function testGetGreatestOccurrence():void
     {
         $chainService = new ChainService();
 

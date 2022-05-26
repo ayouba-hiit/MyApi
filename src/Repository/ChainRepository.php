@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Chain;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @extends ServiceEntityRepository<Chain>
@@ -16,9 +17,30 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ChainRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $paginator;
+
+    public function __construct(ManagerRegistry $registry, PaginatorInterface $paginator)
     {
         parent::__construct($registry, Chain::class);
+        $this->paginator = $paginator;
+    }
+
+    /**
+     * @param int $page
+     * @param int $limit
+     *
+     * @return array
+     */
+    public function getPaginatedList(int $page, int $limit): array
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        $pagination = $this->paginator->paginate($qb->getQuery(), $page, $limit);
+
+        return $pagerResponse = [
+            'count' => $pagination->getTotalItemCount(),
+            'items' => $pagination->getItems(),
+        ];
     }
 
     public function add(Chain $entity, bool $flush = false): void
@@ -38,29 +60,4 @@ class ChainRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-
-//    /**
-//     * @return Chain[] Returns an array of Chain objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Chain
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

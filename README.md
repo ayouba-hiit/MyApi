@@ -17,9 +17,17 @@ docker-compose up -d
 php bin/console doctrine:database:create
 ```
 
-5- Url api doc
+5- lancer les migrations
+```php
+php bin/console doctrine:migrations:migrate
+```
+6- Url api doc
 
 ```php
 /api/doc
 ```
 
+7- lancer les tests unitaires
+```php
+php bin/phpunit
+```
