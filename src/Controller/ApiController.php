@@ -7,6 +7,7 @@ use App\Service\ChainService;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations\Get;
+use FOS\RestBundle\View\View;
 use Symfony\Component\Routing\Annotation\Route;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use Symfony\Contracts\Cache\CacheInterface;
@@ -70,7 +71,7 @@ class ApiController extends AbstractFOSRestController
 
         $view = $this->view($response, 200);
 
-        return $this->handleView($view);
+        return View::create($view);
     }
 
     /**
