@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Chain;
 use App\Service\ChainService;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use FOS\RestBundle\Controller\Annotations\Get;
@@ -23,7 +24,7 @@ class ApiController extends AbstractFOSRestController
 
     /**
      * @Get(
-     *     path = "/",
+     *     path = "/calculate-occurrence",
      *     name = "api_calculate_occurrence",
      *     requirements = {"chain"="[a-zA-Z]+"}
      * )
