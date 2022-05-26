@@ -10,6 +10,8 @@ use FOS\RestBundle\Controller\Annotations\Get;
 use Symfony\Component\Routing\Annotation\Route;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use Symfony\Contracts\Cache\CacheInterface;
+use OpenApi\Annotations as OA;
+use Nelmio\ApiDocBundle\Annotation\Model;
 
 /**
  * @Route("/api")
@@ -53,10 +55,10 @@ class ApiController extends AbstractFOSRestController
      * @QueryParam(name="page", requirements="\d+", strict=true, default="1", description="page")
      * @QueryParam(name="limit", requirements="\d+", strict=true, default="5", description="limit")
      */
-    public function getOccurrenceListAction(EntityManagerInterface $entityManager, int $page, int $limit)
+    public function getOccurrenceListAction(EntityManagerInterface $entityManager,CacheInterface $cache, int $page, int $limit)
     {
         $response = $entityManager->getRepository(Chain::class)->getPaginatedList($page, $limit);
-
+        
         $view = $this->view($response, 200);
 
         return $this->handleView($view);
